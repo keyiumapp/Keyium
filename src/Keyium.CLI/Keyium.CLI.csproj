@@ -1,20 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="KeyboardListener\**" />
-    <EmbeddedResource Remove="KeyboardListener\**" />
-    <None Remove="KeyboardListener\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="KeyboardListener\**" />
+        <EmbeddedResource Remove="KeyboardListener\**" />
+        <None Remove="KeyboardListener\**" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="SharpHook" Version="7.0.3" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="SharpHook" Version="7.0.3" />
+    </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Keyium.Core\Keyium.Core.csproj" />
+    </ItemGroup>
 </Project>
