@@ -11,14 +11,14 @@
 *
 * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 **/
-
 namespace Keyium.CLI
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            KeyboardHook hook = new AudioPlayerOwnaudio("key.wav", new AudioPlayer(384000, 2));
+            hook.Start();
         }
     }
 }

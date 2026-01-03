@@ -12,26 +12,60 @@
 * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 **/
 
+using Keyium.Core.AudioEngine;
+using Keyium.Core.KeyboardInput.KeyboardAdapter;
 using SharpHook;
 
 namespace Keyium.Core.KeyboardInput
 {
     public class KeyboardHook
     {
-        private readonly TaskPoolGlobalHook _hook;
+        public string AudioFile { get; private set; }
 
-        public KeyboardHook()
+        private readonly TaskPoolGlobalHook _hook = new();
+        private readonly IAudioPlayer _audioPlayer;
+
+        //public KeyboardHook(CachedSound audioClip, AudioPlayer audioPlayer)
+        //{
+        //    AudioClip = audioClip;
+        //    AudioFile = AudioClip.ToString();
+
+        //    _audioPlayer = audioPlayer;
+        //}
+
+        public KeyboardHook(string audioFile, IAudioPlayer audioPlayer)
         {
-            _hook = new();
+            AudioFile = audioFile;
+            _audioPlayer = audioPlayer;
         }
 
-        public void StartListening(IKeyboardAdapter listener)
+        public void StartListening(IKeyboardAdapter adapter)
         {
-            _hook.KeyPressed += listener.KeyPressed;
-            _hook.KeyReleased += listener.KeyReleased;
-            _hook.KeyTyped += listener.KeyTyped;
+            switch (adapter.TriggerMethod)
+            {
+                case KeyboardTriggerMethod.Pressed:
+                    _hook.KeyPressed += adapter.OnKeyTrigger;
+                    break;
+
+                case KeyboardTriggerMethod.Released:
+                    _hook.KeyReleased += adapter.OnKeyTrigger;
+                    break;
+
+                case KeyboardTriggerMethod.Typed:
+                    _hook.KeyTyped += adapter.OnKeyTrigger;
+                    break;
+            }
 
             _hook.Run();
         }
+
+        public void Start()
+        {
+            _hook.KeyPressed += OnKeyTrigger;
+            _hook.Run();
+        }
+
+        public void OnKeyTrigger(object? sender, KeyboardHookEventArgs e) =>
+            _audioPlayer.PlaySound(AudioFile);
     }
 }
